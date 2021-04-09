@@ -1,12 +1,14 @@
-#INFO
+# INFO 
 The project is based on the speedtest-cli project
 Allows you to measure the internet speed in Upload / Download as well as the ping and send it to a Domoticz server.
 
-# INSTALL
+# INSTALL 
 On the Domoticz server, create 1 virtual counter
 then 3 virtual sensors
 note the identifiers of the virtual sensors
 and pass them as a parameter in the Dockerfile
+
+# ENV VARIABLES 
 
 the list of parameters is:
 
