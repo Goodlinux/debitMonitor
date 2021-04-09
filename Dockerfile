@@ -17,11 +17,11 @@ ENV TZ=Europe/Paris
 ENV NUM_SENSOR_UP=1 \ 
     NUM_SENSOR_DOWN=2 \ 
     NUM_SENSOR_PING=3 \ 
-    DOMOTICZ_SERV=http://192.168.1.30 \ 
-    DOMOTICZ_PORT=18084 \ 
+    DOMOTICZ_SERV=http://192.168.10.150 \ 
+    DOMOTICZ_PORT=8080 \ 
     DOMOTICZ_USER=username \ 
     DOMOTICZ_PASS=password \ 
-    CRON_MINUT_DELAY=10 
+    CRON_MINUT_DELAY=15 
 
 RUN echo 'https://mirrors.ircam.fr/pub/alpine/v3.9/community' >> /etc/apk/repositories && apk -U add speedtest-cli curl apk-cron tzdata \ 
      && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \ 
@@ -38,7 +38,6 @@ RUN echo 'https://mirrors.ircam.fr/pub/alpine/v3.9/community' >> /etc/apk/reposi
 	 && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_DOWN'"&nvalue=0&svalue="'$DOWN''"'   >> /usr/local/bin/speedtestScript  \ 
 	 && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_UP'"&nvalue=0&svalue="'$UP''"'   >> /usr/local/bin/speedtestScript  \ 
 	 && echo  "apk -U upgrade" > /usr/local/bin/updtPkg  \
-	 && echo  'ls -la $1'  >  /usr/local/bin/ll
 	 && echo "*/$CRON_MINUT_DELAY     *       *       *       *       /usr/local/bin/speedtestScript" >> /etc/crontabs/root  \ 
 	 && echo "00     1       *       *       sun       /usr/local/bin/updtPkg" >> /etc/crontabs/root  \ 
 	 && chmod a+x /usr/local/bin/*
