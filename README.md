@@ -1,6 +1,7 @@
 # INFO 
-The project is based on the speedtest-cli project
-Allows you to measure the internet speed in Upload / Download as well as the ping and send it to a Domoticz server.
+The project is based on the speedtest-cli project https://github.com/sivel/speedtest-cli 
+
+It allows you to measure the internet speed in Upload / Download as well as the ping and send it to a Domoticz server.
 
 # INSTALL 
  On the Domoticz server, create 1 virtual counter then 3 virtual sensors 
