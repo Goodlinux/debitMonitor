@@ -1,5 +1,5 @@
 FROM alpine:latest
-MAINTAINER Ludovic MAILLET <Ludoivc@maillet.me>
+MAINTAINER Ludovic MAILLET <Ludo.Goodlinux@gmail.com>
 
 
 #localtime zone
