@@ -42,6 +42,6 @@ RUN  apk -U add pip3 python3 curl apk-cron tzdata \
      && echo "00     1       *       *       sun       /usr/local/bin/updtPkg" >> /etc/crontabs/root  \ 
      && chmod a+x /usr/local/bin/*
 
-# Lancement du daemon cron
+# Lancement du daemon cron 
 #CMD crond -f
 ENTRYPOINT ["cron", "-f"]
