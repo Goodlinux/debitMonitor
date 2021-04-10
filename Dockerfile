@@ -22,7 +22,7 @@ ENV TZ=Europe/Paris \
     DOMOTICZ_PASS=password \ 
     CRON_MINUT_DELAY=15 
 
-RUN  apk -U add pip3 python3 curl apk-cron tzdata \
+RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && pip install pip speedtest-cli --upgrade  \
      && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \ 
      && echo  "speedtest --simple > /tmp/speedcomplet"   > /usr/local/bin/speedtestScript  \ 
