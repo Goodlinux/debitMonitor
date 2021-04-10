@@ -39,9 +39,13 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_UP'"&nvalue=0&svalue="'$UP''"'   >> /usr/local/bin/speedtestScript  \ 
      && echo  "apk -U upgrade" > /usr/local/bin/updtPkg  \
      && echo "*/$CRON_MINUT_DELAY     *       *       *       *       /usr/local/bin/speedtestScript" >> /etc/crontabs/root  \ 
-     && echo "00     1       *       *       sun       /usr/local/bin/updtPkg" >> /etc/crontabs/root  \ 
+     && echo "00     1       *       *       sun       /usr/local/bin/updtPkg" >> /etc/crontabs/root  \
+     && echo "#! /bin/sh" > /usr/local/bin/entrypoint.sh \
+     && echo "crond -b" >> /usr/local/bin/entrypoint.sh  \
+     && echo "/bin/sh" >> /usr/local/bin/entrypoint.sh  \
      && chmod a+x /usr/local/bin/*
 
 # Lancement du daemon cron 
 #CMD crond -f
-ENTRYPOINT ["cron", "-f"]
+CMD /usr/local/bin/entrypoint.sh 
+#ENTRYPOINT ["cron", "-f"]
