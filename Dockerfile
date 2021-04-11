@@ -22,7 +22,8 @@ ENV TZ=Europe/Paris \
     DOMOTICZ_PASS=password \ 
     CRON_MINUT_DELAY=15 
 
-RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
+RUN  apk -U add py3-pip python3 curl apk-cron tzdata openresolv \ 
+     && echo "name_servers=1.1.1.1" > /etc/resolvconf.conf \
      && pip install pip speedtest-cli --upgrade  \
      && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \ 
      && echo  "speedtest --simple > /tmp/speedcomplet"   > /usr/local/bin/speedtestScript  \ 
@@ -41,8 +42,16 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && echo "*/$CRON_MINUT_DELAY     *       *       *       *       /usr/local/bin/speedtestScript" >> /etc/crontabs/root  \ 
      && echo "00     1       *       *       sun       /usr/local/bin/updtPkg" >> /etc/crontabs/root  \
      && echo "#! /bin/sh" > /usr/local/bin/entrypoint.sh \
-     && echo "crond -b" >> /usr/local/bin/entrypoint.sh  \
-     && echo "/bin/sh" >> /usr/local/bin/entrypoint.sh  \
+     && echo "SETTINGS="/root/domain-settings"   >> /usr/local/bin/entrypoint.sh  \
+     && echo "resolvconf -u" >> /usr/local/bin/entrypoint.sh  \
+     && echo "if [ -e  $SETTINGS ]  " >> /usr/local/bin/entrypoint.sh  \ 
+     && echo "then"   >> /usr/local/bin/entrypoint.sh  \ 
+     && echo "        crond -f"  >> /usr/local/bin/entrypoint.sh  \  
+     && echo "else "   >> /usr/local/bin/entrypoint.sh  \ 
+     && echo "        echo "Le fichier $SETTINGS n existe pas Domaine : $DOMAIN"  >> /usr/local/bin/entrypoint.sh  \ 
+     && echo "        domain-connect-dyndns setup --domain $DOMAIN --config $SETTINGS "  >> /usr/local/bin/entrypoint.sh  \
+     && echo "        crond -f" >> /usr/local/entrypoint.sh  \ 
+     && echo "fi "   >> /usr/local/bin/entrypoint.sh  \
      && chmod a+x /usr/local/bin/*
 
 # Lancement du daemon cron 
