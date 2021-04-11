@@ -7,6 +7,9 @@
  note the identifiers of the virtual sensors 
  and pass them as a parameter in the Dockerfile 
  
+# DNS 
+ api.domainconnect.1and1.com
+
 # ENV VARIABLES 
  the list of parameters is: 
  Id of the sensor in domoticz corresponding to Upload 
