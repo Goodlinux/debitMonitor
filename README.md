@@ -8,7 +8,9 @@
  and pass them as a parameter in the Dockerfile 
  
 # DNS 
- api.domainconnect.1and1.com
+ be sure you have a txt dns _domainconnect with value : api.domainconnect.1and1.com
+ TXT	_domainconnect	"api.domainconnect.1and1.com"	-
+ under your domain name
 
 # ENV VARIABLES 
  the list of parameters is: 
