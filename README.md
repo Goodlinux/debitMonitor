@@ -12,6 +12,11 @@
  TXT	_domainconnect	"api.domainconnect.1and1.com"	-
  under your domain name
 
+changer resolv.conf puis 
+
+sudo chattr +i /etc/resolv.conf
+
+
 # ENV VARIABLES 
  the list of parameters is: 
  Id of the sensor in domoticz corresponding to Upload 
