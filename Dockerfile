@@ -27,7 +27,7 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && pip install pip speedtest-cli --upgrade  \
      && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \ 
      && echo  "speedtest --simple > /tmp/speedcomplet"   > /usr/local/bin/speedtestScript  \ 
-     && echo  "date" >> /usr/local/bin/speedtestScript  \ 
+     && echo  "date +'%Y-%m-%d %H:%M'" >> /usr/local/bin/speedtestScript  \ 
      && echo  "cut -d' ' -f 2  /tmp/speedcomplet > /tmp/speedresult"   >> /usr/local/bin/speedtestScript  \ 
      && echo  "PING="'$'"(sed -n '1 p' /tmp/speedresult)"   >> /usr/local/bin/speedtestScript  \ 
      && echo  "DOWN="'$'"(sed -n '2 p' /tmp/speedresult)"   >> /usr/local/bin/speedtestScript  \ 
