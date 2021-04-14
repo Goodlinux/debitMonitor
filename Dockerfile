@@ -23,7 +23,6 @@ ENV TZ=Europe/Paris \
     CRON_MINUT_DELAY=15 
 
 RUN  apk -U add py3-pip python3 curl apk-cron tzdata \ 
-     && echo "name_servers=1.1.1.1" > /etc/resolvconf.conf \
      && pip install pip speedtest-cli --upgrade  \
      && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \ 
      && echo  "speedtest --simple > /tmp/speedcomplet"   > /usr/local/bin/speedtestScript  \ 
