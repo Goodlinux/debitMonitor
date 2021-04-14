@@ -26,17 +26,17 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && pip install pip speedtest-cli --upgrade  \
      && cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \ 
      && echo  "speedtest --simple > /tmp/speedcomplet"   > /usr/local/bin/speedtestScript  \ 
-     && echo  "date +'%Y-%m-%d %H:%M'" >> /usr/local/bin/speedtestScript  \ 
+     && echo  "date +'%Y-%m-%d %H:%M' > /dev/stdout" >> /usr/local/bin/speedtestScript  \ 
      && echo  "cut -d' ' -f 2  /tmp/speedcomplet > /tmp/speedresult"   >> /usr/local/bin/speedtestScript  \ 
      && echo  "PING="'$'"(sed -n '1 p' /tmp/speedresult)"   >> /usr/local/bin/speedtestScript  \ 
      && echo  "DOWN="'$'"(sed -n '2 p' /tmp/speedresult)"   >> /usr/local/bin/speedtestScript  \ 
-     && echo  "UP="'$'"(sed -n '3 p' /tmp/speedresult)"   >> /usr/local/bin/speedtestScript  \ 
-     && echo  "echo PING : "'$PING'       >> /usr/local/bin/speedtestScript  \ 
-     && echo  "echo Download : "'$DOWN'    >> /usr/local/bin/speedtestScript  \ 
-     && echo  "echo Upload : "'$UP'      >> /usr/local/bin/speedtestScript  \ 
-     && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_PING'"&nvalue=0&svalue="'$PING''"'   >> /usr/local/bin/speedtestScript  \ 
-     && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_DOWN'"&nvalue=0&svalue="'$DOWN''"'   >> /usr/local/bin/speedtestScript  \ 
-     && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_UP'"&nvalue=0&svalue="'$UP''"'   >> /usr/local/bin/speedtestScript  \ 
+     && echo  "UP="'$'"(sed -n '3 p' /tmp/speedresult)"     >> /usr/local/bin/speedtestScript  \ 
+     && echo  "echo PING : "'$PING'       > /dev/stdout     >> /usr/local/bin/speedtestScript  \ 
+     && echo  "echo Download : "'$DOWN'   > /dev/stdout     >> /usr/local/bin/speedtestScript  \ 
+     && echo  "echo Upload : "'$UP'       > /dev/stdout     >> /usr/local/bin/speedtestScript  \ 
+     && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_PING'"&nvalue=0&svalue="'$PING''"  > /dev/stdout'   >> /usr/local/bin/speedtestScript  \ 
+     && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_DOWN'"&nvalue=0&svalue="'$DOWN''"  > /dev/stdout'   >> /usr/local/bin/speedtestScript  \ 
+     && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_UP'"&nvalue=0&svalue="'$UP''"  > /dev/stdout'   >> /usr/local/bin/speedtestScript  \ 
      && echo  "apk -U upgrade" > /usr/local/bin/updtPkg  \
      && echo "*/$CRON_MINUT_DELAY     *       *       *       *       /usr/local/bin/speedtestScript" >> /etc/crontabs/root  \ 
      && echo "00     1       *       *       sun       /usr/local/bin/updtPkg" >> /etc/crontabs/root  \
