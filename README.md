@@ -15,21 +15,12 @@
  for inons the value of the TXT field is : "api.domainconnect.1and1.com"
  
 # ENV VARIABLES 
- the list of parameters is: 
- Id of the sensor in domoticz corresponding to Upload 
- Id of the sensor in domoticz corresponding to Download 
- Id of the sensor in domoticz corresponding to Ping 
- Address of your Domoticz server 
- Port of the Domoticz server 
- Domoticz username 
- Domoticz password 
- Delay in minutes for the CronJob 
- 
- NUM_SENSOR_UP = 1 
- NUM_SENSOR_DOWN = 2 
- NUM_SENSOR_PING = 3 
- DOMOTICZ_SERV = http://192.168.10.150 
- DOMOTICZ_PORT = 8080 
- DOMOTICZ_USER = username 
- DOMOTICZ_PASS = password 
- CRON_MINUT_DELAY = 15 
+ the list of parameters is:   
+ NUM_SENSOR_UP = 1      Id of the sensor in domoticz corresponding to Upload   
+ NUM_SENSOR_DOWN = 2    Id of the sensor in domoticz corresponding to Download   
+ NUM_SENSOR_PING = 3    Id of the sensor in domoticz corresponding to Ping   
+ DOMOTICZ_SERV = http://192.168.10.150    Address of your Domoticz server   
+ DOMOTICZ_PORT = 8080    Port of the Domoticz server   
+ DOMOTICZ_USER = username    Domoticz username 
+ DOMOTICZ_PASS = password    Domoticz password 
+ CRON_MINUT_DELAY = 15       Delay in minutes for the CronJob 
