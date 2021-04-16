@@ -29,11 +29,11 @@ Domoticz username
 Domoticz password 
 Delay in minutes for the CronJob 
 
-NUM_SENSOR_UP = 1 
-NUM_SENSOR_DOWN = 2 
-NUM_SENSOR_PING = 3 
-DOMOTICZ_SERV = http: //192.168.10.150 
-DOMOTICZ_PORT = 8080 
-DOMOTICZ_USER = username  
-DOMOTICZ_PASS = password  
-CRON_MINUT_DELAY = 15 
+ NUM_SENSOR_UP = 1 
+ NUM_SENSOR_DOWN = 2 
+ NUM_SENSOR_PING = 3 
+ DOMOTICZ_SERV = http: //192.168.10.150 
+ DOMOTICZ_PORT = 8080 
+ DOMOTICZ_USER = username 
+ DOMOTICZ_PASS = password 
+ CRON_MINUT_DELAY = 15 
