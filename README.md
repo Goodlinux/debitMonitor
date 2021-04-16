@@ -18,6 +18,7 @@ for inons the value of the TXT field is : "api.domainconnect.1and1.com"
 
 
 # ENV VARIABLES 
+ 
  the list of parameters is: 
  Id of the sensor in domoticz corresponding to Upload 
  Id of the sensor in domoticz corresponding to Download 
