@@ -21,6 +21,6 @@
  NUM_SENSOR_PING = 3    Id of the sensor in domoticz corresponding to Ping   
  DOMOTICZ_SERV = http://192.168.10.150    Address of your Domoticz server   
  DOMOTICZ_PORT = 8080    Port of the Domoticz server   
- DOMOTICZ_USER = username    Domoticz username 
- DOMOTICZ_PASS = password    Domoticz password 
- CRON_MINUT_DELAY = 15       Delay in minutes for the CronJob 
+ DOMOTICZ_USER = username    Domoticz username   
+ DOMOTICZ_PASS = password    Domoticz password   
+ CRON_MINUT_DELAY = 15       Delay in minutes for the CronJob  
