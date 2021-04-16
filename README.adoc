@@ -13,13 +13,8 @@ note the identifiers of the virtual sensors
 and pass them as a parameter in the Dockerfile 
  
 # DNS 
-be sure you have a txt dns _domainconnect with value : api.domainconnect.1and1.com
-TXT	_domainconnect	"api.domainconnect.1and1.com"	-
-under your domain name
-
-changer resolv.conf puis 
-
-sudo chattr +i /etc/resolv.conf
+be sure you have a txt dns _domainconnect TXT field under your domain name with value depending on your DNS provider 
+for inons the value of the TXT field is : "api.domainconnect.1and1.com"
 
 
 # ENV VARIABLES 
