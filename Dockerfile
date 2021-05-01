@@ -49,7 +49,7 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && echo "then"   >> /usr/local/bin/entrypoint.sh  \ 
      && echo "        crond -f&"  >> /usr/local/bin/entrypoint.sh  \  
      && echo "else "   >> /usr/local/bin/entrypoint.sh  \ 
-     && echo "        echo "Le fichier $SETTINGS n existe pas Domaine : $DOMAIN"  >> /usr/local/bin/entrypoint.sh  \ 
+     && echo "        echo Le fichier $SETTINGS n'existe pas Domaine : $DOMAIN  >> /usr/local/bin/entrypoint.sh  \ 
      && echo "        domain-connect-dyndns setup --domain $DOMAIN --config $SETTINGS "  >> /usr/local/bin/entrypoint.sh  \
      && echo "        crond -f&" >> /usr/local/entrypoint.sh  \ 
      && echo "fi "   >> /usr/local/bin/entrypoint.sh  \
