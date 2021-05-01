@@ -41,21 +41,21 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && echo  "curl --user "'$DOMOTICZ_USER'":"'$DOMOTICZ_PASS' '"''$DOMOTICZ_SERV'":"'$DOMOTICZ_PORT'"/json.htm?type=command&param=udevice&idx="'$NUM_SENSOR_UP'"&nvalue=0&svalue="'$UP''"  > /dev/stdout'   >> /usr/local/bin/speedtestScript  \ 
      && echo  "apk -U upgrade" > /usr/local/bin/updtPkg  \
      && echo "#! /bin/sh" > /usr/local/bin/entrypoint.sh \
-     && echo "echo '*/'\$CRON_MINUT_DELAY'*       *       *       *       /usr/local/bin/speedtestScript' > /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
+     && echo "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedtestScript' > /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
      && echo "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
      && echo "SETTINGS=/root/domain-settings"   >> /usr/local/bin/entrypoint.sh  \
-     && echo "resolvconf -u" >> /usr/local/bin/entrypoint.sh  \
      && echo "if [ -e  $SETTINGS ]  " >> /usr/local/bin/entrypoint.sh  \ 
      && echo "then"   >> /usr/local/bin/entrypoint.sh  \ 
      && echo "        crond -f&"  >> /usr/local/bin/entrypoint.sh  \  
      && echo "else "   >> /usr/local/bin/entrypoint.sh  \ 
-     && echo "        echo Le fichier $SETTINGS n'existe pas Domaine : $DOMAIN"  >> /usr/local/bin/entrypoint.sh  \ 
+     && echo "        echo "Le fichier $SETTINGS n'existe pas Domaine : $DOMAIN"  >> /usr/local/bin/entrypoint.sh  \ 
      && echo "        domain-connect-dyndns setup --domain $DOMAIN --config $SETTINGS "  >> /usr/local/bin/entrypoint.sh  \
      && echo "        crond -f&" >> /usr/local/entrypoint.sh  \ 
      && echo "fi "   >> /usr/local/bin/entrypoint.sh  \
      && echo "exec /bin/sh" >> /usr/local/bin/entrypoint.sh  \
      && chmod a+x /usr/local/bin/*
 
+#&& echo "resolvconf -u" >> /usr/local/bin/entrypoint.sh  \
 # Lancement du daemon cron 
 #CMD crond -f
 CMD /bin/sh
