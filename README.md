@@ -22,6 +22,6 @@
  DOMOTICZ_PORT = 8080    Port of the Domoticz server   
  DOMOTICZ_USER = username    Domoticz username   
  DOMOTICZ_PASS = password    Domoticz password   
- CRON_HOUR_START=22   Hour to start the Job for Updates  
- CRON_DAY_START=sun   Day to start the job for updates  
+ CRON_HOUR_START = 22        Hour to start the Job for Updates  
+ CRON_DAY_START = sun        Day to start the job for updates values "mon tue ... sat sun"     
  CRON_MINUT_DELAY = 15       Delay in minutes for the CronJob to check the internet debit  
