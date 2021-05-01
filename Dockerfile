@@ -43,7 +43,7 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && echo "#! /bin/sh" > /usr/local/bin/entrypoint.sh \
      && echo "echo '*/'\$CRON_MINUT_DELAY'*       *       *       *       /usr/local/bin/speedtestScript' > /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
      && echo "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
-     && echo "SETTINGS="/root/domain-settings"   >> /usr/local/bin/entrypoint.sh  \
+     && echo "SETTINGS=/root/domain-settings"   >> /usr/local/bin/entrypoint.sh  \
      && echo "resolvconf -u" >> /usr/local/bin/entrypoint.sh  \
      && echo "if [ -e  $SETTINGS ]  " >> /usr/local/bin/entrypoint.sh  \ 
      && echo "then"   >> /usr/local/bin/entrypoint.sh  \ 
