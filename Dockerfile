@@ -45,7 +45,7 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
      && echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedtestScript' > /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
      && echo  "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
      && echo  "echo Lancement de Cron"  >> /usr/local/bin/entrypoint.sh \
-     && echo  "crond -f&" >> /usr/local/entrypoint.sh  \ 
+     && echo  "crond -f&" >> /usr/local/bin/entrypoint.sh  \
      && echo  "exec /bin/sh" >> /usr/local/bin/entrypoint.sh  \
      && chmod a+x /usr/local/bin/*
 
