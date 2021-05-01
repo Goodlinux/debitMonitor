@@ -58,5 +58,6 @@ RUN  apk -U add py3-pip python3 curl apk-cron tzdata \
 
 # Lancement du daemon cron 
 #CMD crond -f
-CMD /usr/local/bin/entrypoint.sh 
+CMD /bin/sh
+#CMD /usr/local/bin/entrypoint.sh 
 #ENTRYPOINT ["cron", "-f"]
