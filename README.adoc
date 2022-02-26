@@ -16,7 +16,6 @@ and pass them as a parameter in the Dockerfile
 be sure you have a txt dns _domainconnect TXT field under your domain name with value depending on your DNS provider 
 for inons the value of the TXT field is : "api.domainconnect.1and1.com"
 
-
 # ENV VARIABLES 
  the list of parameters are: 
  Id of the sensor in domoticz corresponding to Upload 
