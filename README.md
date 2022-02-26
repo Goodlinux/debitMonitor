@@ -16,18 +16,6 @@
 
 # ENV VARIABLES 
  the list of parameters are:
- Id of the sensor in domoticz corresponding to Upload
- Id of the sensor in domoticz corresponding to Download
- Id of the sensor in domoticz corresponding to Ping
- Address of your Domoticz server
- Port of the Domoticz server
- Domoticz username
- Domoticz password
- Delay in minutes for the CronJob
- IP Address of the mysql server
- Port of the mysql server
- Utilisateur mysql
- Password mysql
 
  NUM_SENSOR_UP = 1      Id of the sensor in domoticz corresponding to Upload   
  NUM_SENSOR_DOWN = 2    Id of the sensor in domoticz corresponding to Download   
@@ -39,8 +27,8 @@
  CRON_HOUR_START = 22        Hour to start the Job for Updates  
  CRON_DAY_START = sun        Day to start the job for updates values "mon tue ... sat sun"     
  CRON_MINUT_DELAY = 15       Delay in minutes for the CronJob to check the internet debit 
- SQL_SERV = 192.168.10.150 
- SQL_PORT = 3307 
- SQL_USER = sgbdUser 
- SQL_PASS = sgbdPassword 
- SQL_BASE = NomBase	
+ SQL_SERV = 192.168.10.150   Address of the SQL server
+ SQL_PORT = 3307             Port of the SQL server
+ SQL_USER = sgbdUser         Sgbd user name
+ SQL_PASS = sgbdPassword     Sgbd user password
+ SQL_BASE = NomBase	         Sgbd database name
