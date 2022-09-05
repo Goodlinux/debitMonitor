@@ -1,0 +1,27 @@
+
+speedtest -f json > /tmp/speedcomplet                                                                                                                      
+DATE=$(date +'%Y-%m-%d %H:%M')                                                                                                                              
+echo $DATE > /dev/stdout                                                                                                                                    
+                                                                                                     
+downraw=$(jq -r '.download.bandwidth' /tmp/speedcomplet)
+DOWN=$(printf %.2f\\n "$((downraw * 8))e-6")
+
+upraw=$(jq -r '.upload.bandwidth' /tmp/speedcomplet)
+UP=$(printf %.2f\\n "$((upraw * 8))e-6")
+
+PING=$(jq -r '.ping.latency' /tmp/speedcomplet)
+
+
+echo PING : $PING                                                                                                                                           
+echo Download : $DOWN                                                                                                                                       
+echo Upload : $UP                                                                                                                                           
+
+if [ -n "$DOMOTICZ_SERV" ]; then                                                                                                                            
+      curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_PING&nvalue=0&svalue=$PING"  > /dev/stdout                                                                                                                                           
+      curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN"  > /dev/stdout                                                                                                                                           
+      curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP"  > /dev/stdout                                                                                                                                               
+fi                                                                                                                                                          
+if [ -n "$SQL_SERV" ]; then                                                                                                                                 
+      echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`, \`ping\`) VALUES ("\"$DATE\"",$UP,$DOWN,$PING);"  > /tmp/insert.sql                    
+      mysql --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /tmp/insert.sql                                            
+fi
