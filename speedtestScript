@@ -1,4 +1,4 @@
-
+#! /bin/bash
 speedtest -f json > /tmp/speedcomplet                                                                                                                      
 DATE=$(date +'%Y-%m-%d %H:%M')                                                                                                                              
 echo $DATE > /dev/stdout                                                                                                                                    
