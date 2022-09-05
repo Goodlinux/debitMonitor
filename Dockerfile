@@ -39,10 +39,10 @@ RUN echo  "#! /bin/bash"                                > /usr/local/bin/entrypo
     && echo  "curl -s -o /usr/local/bin/speedtestScript https://raw.githubusercontent.com/Goodlinux/debitMonitor/master/speedtestScript"  >> /usr/local/bin/entrypoint.sh \
     && echo  "chmod +x /usr/local/bin/speedtestScript"        >> /usr/local/bin/entrypoint.sh \
     && echo  "echo Parametrage de Cron"         >> /usr/local/bin/entrypoint.sh \
-    && echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedtestScript' > /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
-    && echo  "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
+    && echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedtestScript' > /etc/cron.hourly/speed" >> /usr/local/bin/entrypoint.sh  \
+    && echo  "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/cron.weekly/updt" >> /usr/local/bin/entrypoint.sh  \
     && echo  "echo Lancement de Cron"           >> /usr/local/bin/entrypoint.sh \
-    && echo  "crond -f&"                        >> /usr/local/bin/entrypoint.sh  \
+    && echo  "cron -f&"                        >> /usr/local/bin/entrypoint.sh  \
     && echo  "exec /bin/bash"                     >> /usr/local/bin/entrypoint.sh  \
     && chmod a+x /usr/local/bin/*
 
