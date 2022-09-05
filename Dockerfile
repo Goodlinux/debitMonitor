@@ -25,7 +25,7 @@ ENV TZ=Europe/Paris        \
 #&& echo  "echo 'nameserver      8.8.8.8' >> /etc/resolv.conf"    >> /usr/local/bin/entrypoint.sh \ 
     
     
-RUN  apt update && apt upgrade -y && apt install curl mysql-client jq tzdata nano \ 
+RUN  apt update && apt upgrade -y && apt install curl default-mysql-client jq nano \ 
     && curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash \
     && sudo apt install speedtest \
     && speedtest --accept-gdpr   \ 
