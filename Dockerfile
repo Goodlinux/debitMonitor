@@ -18,32 +18,26 @@ ENV TZ=Europe/Paris        \
     CRON_HOUR_START=22     \
     CRON_DAY_START=sun     \
     CRON_MINUT_DELAY=15 
-    
-#&& cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ >  /etc/timezone  \
-#&& echo  "echo 'nameserver      1.1.1.1' > /etc/resolv.conf"  >> /usr/local/bin/entrypoint.sh \
-#&& echo  "echo 'nameserver      1.0.0.1' >> /etc/resolv.conf"    >> /usr/local/bin/entrypoint.sh \
-#&& echo  "echo 'nameserver      8.8.8.8' >> /etc/resolv.conf"    >> /usr/local/bin/entrypoint.sh \ 
-    
-    
-RUN  apt-get update && apt-get upgrade -y 
-RUN apt-get -y install apt-utils 
+
+RUN apt-get update && apt-get upgrade -y 
 RUN apt-get -y install curl default-mysql-client jq nano cron
 RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash 
-RUN apt-get install speedtest 
-RUN speedtest --accept-license --accept-gdpr  
+RUN apt-get install speedtest && speedtest --accept-gdpr --accept-license  
 RUN echo  "#! /bin/bash"                                        > /usr/local/bin/updtPkg      \              
     && echo  "apt-get update && apt-get upgrade -y"                >> /usr/local/bin/updtPkg     \
     && echo  "curl -s -o /usr/local/bin/speedtestScript https://raw.githubusercontent.com/Goodlinux/debitMonitor/master/speedtestScript" >> /usr/local/bin/updtPkg 
 RUN echo  "#! /bin/bash"                                > /usr/local/bin/entrypoint.sh \
-    && echo  "echo mise à jour du script de test"       >> /usr/local/bin/entrypoint.sh \
+	&& echo  "printenv | grep -v "no_proxy" >> /etc/environment" >> /usr/local/bin/entrypoint.sh \
+	&& echo  "echo script speed test update"       >> /usr/local/bin/entrypoint.sh \
     && echo  "curl -s -o /usr/local/bin/speedtestScript https://raw.githubusercontent.com/Goodlinux/debitMonitor/master/speedtestScript"  >> /usr/local/bin/entrypoint.sh \
     && echo  "chmod +x /usr/local/bin/speedtestScript"        >> /usr/local/bin/entrypoint.sh \
-    && echo  "echo Parametrage de Cron"         >> /usr/local/bin/entrypoint.sh \
-    && echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedtestScript' > /etc/cron.hourly/speed" >> /usr/local/bin/entrypoint.sh  \
-    && echo  "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/cron.weekly/updt" >> /usr/local/bin/entrypoint.sh  \
-    && echo  "echo Lancement de Cron"           >> /usr/local/bin/entrypoint.sh \
-    && echo  "cron -f&"                        >> /usr/local/bin/entrypoint.sh  \
-    && echo  "exec /bin/bash"                     >> /usr/local/bin/entrypoint.sh  \
+    && echo  "echo change cron parameter with env variable"         >> /usr/local/bin/entrypoint.sh \
+    && echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedtestScript ' > /etc/cron.d/speed-crontab" >> /usr/local/bin/entrypoint.sh  \
+    && echo  "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/cron.d/speed-crontab" >> /usr/local/bin/entrypoint.sh  \
+    && echo  "chmod 0644 /etc/cron.d/speed-crontab"   >> /usr/local/bin/entrypoint.sh \
+	&& echo  "crontab /etc/cron.d/speed-crontab"   >> /usr/local/bin/entrypoint.sh \
+    && echo  "echo launching cron"                 >> /usr/local/bin/entrypoint.sh \
+    && echo  "cron -f"                        >> /usr/local/bin/entrypoint.sh  \
     && chmod a+x /usr/local/bin/*
 
 CMD /usr/local/bin/entrypoint.sh 
