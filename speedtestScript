@@ -4,10 +4,10 @@ DATE=$(date +'%Y-%m-%d %H:%M')
 echo $DATE  > /dev/stdout
 
 downraw=$(jq -r '.download.bandwidth' /tmp/speedcomplet)
-DOWN=$(printf %.2f\\n "$((downraw * 8))e-6")
+DOWN=$(printf %.2f\\n "$((downraw * 8 /1024/1024))")
 
 upraw=$(jq -r '.upload.bandwidth' /tmp/speedcomplet)
-UP=$(printf %.2f\\n "$((upraw * 8))e-6")
+UP=$(printf %.2f\\n "$((upraw * 8 /1024/1024))")
 
 PING=$(jq -r '.ping.latency' /tmp/speedcomplet)
 
