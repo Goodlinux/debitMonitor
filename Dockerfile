@@ -39,5 +39,5 @@ RUN echo  "#! /bin/sh"                                > /usr/local/bin/entrypoin
 	&& echo  "echo launching cron"                 >> /usr/local/bin/entrypoint.sh \
 	&& echo  "cron -f"                        >> /usr/local/bin/entrypoint.sh  \
 	&& chmod a+x /usr/local/bin/*
-
+	
 CMD /usr/local/bin/entrypoint.sh 
