@@ -19,7 +19,7 @@ verbose=""
 #######################
 log() 
 {
-if [ verbose = "y" ]; then
+if [ "$verbose" = "y" ]; then
 	echo "$1" >> /dev/stdout
 fi
 }
