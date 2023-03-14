@@ -40,7 +40,6 @@ GetFromBox()
 	res=$(curl -s -k "http://"$BOX_IP"/ws" -X POST -H "$content_type" -H "$authorisation"$IE  -H "Cookie: "$ID2 --data-raw '{"service":"'$service'","method":"'$method'","parameters":{'$param'}}')
 }
 
-
 #################
 ##### START #####
 #################
@@ -52,7 +51,6 @@ fi
 echo "*=*=**=*==*=*="
 DATE=$(date +'%Y-%m-%d %H:%M') 
 echo $DATE  > /dev/stdout
-
 
 log "Start speedtest diagnostic"
 service=AutoDiag 
