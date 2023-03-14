@@ -19,7 +19,9 @@
 
  NUM_SENSOR_UP = 1            Id of the sensor in domoticz corresponding to Upload   
  NUM_SENSOR_DOWN = 2          Id of the sensor in domoticz corresponding to Download   
- NUM_SENSOR_PING = 3          Id of the sensor in domoticz corresponding to Ping   
+ BOX_IP = 192.168.0.1         Livebox IP on the local networl   
+ BOX_USER = admin             username for the interface of the livebox   
+ BOX_PWD = password           password for the interface of the livebox   
  DOMOTICZ_SERV = http://192.168.10.150    Address of your Domoticz server   
  DOMOTICZ_PORT = 8080         Port of the Domoticz server   
  DOMOTICZ_USER = username     Domoticz username   
