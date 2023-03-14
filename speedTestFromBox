@@ -1,0 +1,87 @@
+#! /bin/sh
+########################
+###### Variables #######
+########################
+# vars
+
+output_type="accept: application/json"
+content_type="Content-Type: application/x-sah-ws-4-call+json"
+authorisation="Authorization: X-Sah "
+login="Authorization: X-Sah-Login"
+
+
+BOX_IP="192.168.1.1"
+box_user="admin"
+box_pwd="BoxMfemaesc?6"
+
+context="/var/tmp/livebox_context"
+cookie="/var/tmp/livebox_cookies"
+res=""
+
+
+#######################
+##### Functions #######
+#######################
+log() 
+{
+	echo "$1" >> /dev/stdout
+}
+
+GetFromBox() 
+{
+    log "---------------"
+    log "Try to get WAN Speed from $BOX_IP."
+	# get authorization	
+	curl -s -o $context -k "http://"$BOX_IP"/ws" -c $cookie -X POST --compressed -H "$login" -H "$content_type" --data-raw '{"service":"sah.Device.Information","method":"createContext","parameters":{"applicationName":"webui","username":"'$box_user'","password":"'$box_pwd'"}}'
+	# set authorization context ID
+	CTX=$(cat $context | jq -c .data.contextID | tr -d '"')
+	GRP=$(cat $context | jq -c .data.groups)
+	IE=$CTX'","username":"'$box_user'","groups":'$GRP'}}'
+#	log "IE : $IE"
+	ID2=$(tail -n1 $cookie | sed 's/#HttpOnly_'$BOX_IP'\tFALSE\t[/]\tFALSE\t0\t//1' | sed 's/sessid\t/sessid=/1')
+#	log "ID2 : $ID2"
+	res=$(curl -s -k "http://"$BOX_IP"/ws" -X POST -H "$content_type" -H "$authorisation"$IE  -H "Cookie: "$ID2 --data-raw '{"service":"'$service'","method":"'$method'","parameters":{'$param'}}')
+}
+
+
+#################
+##### START #####
+#################
+# Get Params
+echo "*=*=**=*==*=*="
+echo "Date : $(date +%Y-%m-%d_%H-%M)"
+
+log "Sstart speedtest diagnostic"
+service=AutoDiag 
+method=executeDiagnostics 
+param='"id":"speedService"'
+
+GetFromBox
+
+log "Verify if Diagnostics is completed"
+Service="AutoDiag" 
+method="getDiagnosticsState"
+
+until [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]
+do
+	GetFromBox
+	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
+	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
+	log "$diag : $diagstate"
+	sleep 5
+done
+
+if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
+	service="SpeedTest"
+	method="getWANResults"
+	param=""
+	GetFromBox
+  
+	download=$(echo "scale=2; $(echo $res | jq -c .status.Downstream.rate) / 1000" | bc -l)
+	upload=$(echo "scale=2; $(echo $res | jq -c .status.Upstream.rate) / 1000" | bc -l)
+	datedeb=$(echo $res | jq -c .status.Downstream.start)
+  
+	log "upload : $upload"	
+	log "download : $download"	
+	log "Date : $datedeb"	
+fi
