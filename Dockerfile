@@ -4,7 +4,7 @@ MAINTAINER Ludovic MAILLET <Ludo.Goodlinux@gmail.com>
 ENV TZ=Europe/Paris        \
 	NUM_SENSOR_UP=1        \ 
 	NUM_SENSOR_DOWN=2      \ 
-	DOMOTICZ_SERV=http://192.168.10.150 \ 
+	DOMOTICZ_SERV=192.168.10.150 \ 
 	DOMOTICZ_PORT=8080     \ 
 	DOMOTICZ_USER=username \ 
 	DOMOTICZ_PASS=password \ 
