@@ -62,13 +62,19 @@ log "Verify if Diagnostics is completed"
 Service="AutoDiag" 
 method="getDiagnosticsState"
 
+i=0
 until [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]
 do
 	GetFromBox
 	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
 	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
-	log "$diag : $diagstate"
+	i=$(expr $i + 1)
+	log "$diag : $diagstate trial $i"
 	sleep 5
+	if [ $i -gt 10 ]; then
+		log "Too many trials, aborting"
+		break
+	fi
 done
 
 if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
@@ -85,15 +91,14 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
 	log "download : $DOWN"	
 	log "Date : $datedeb"	
 	if [ -n "$DOMOTICZ_SERV" ]; then
-		log "Sending results to Domoticz : $DOMOTICZ_SERV"
-		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_PING&nvalue=0&svalue=$PING"
+		echo "Sending results to Domoticz : $DOMOTICZ_SERV"
 		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN"
 		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP"
 	fi
 	if [ -n "$SQL_SERV" ]; then
-      		log "Sending result to SQL Server $SQL_SERV"
-		echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`, \`ping\`) VALUES ("\"$DATE\"",$UP,$DOWN,$PING);"  > /var/tmp/insert.sql
+      		echo "Sending result to SQL Server $SQL_SERV"
+		echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);"  > /var/tmp/insert.sql
 		mysql --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql
 	fi
 fi
-rm /var/tmp/* > NULL
+rm /var/tmp/* > /dev/null
