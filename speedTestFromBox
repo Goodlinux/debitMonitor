@@ -58,19 +58,18 @@ method=executeDiagnostics
 param='"id":"speedService"'
 GetFromBox
 
-log "Verify if Diagnostics is completed"
+log "Wait for the Diagnostics is completed"
 Service="AutoDiag" 
 method="getDiagnosticsState"
-
 i=0
 until [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]
 do
+	sleep 5
 	GetFromBox
 	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
 	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
 	i=$(expr $i + 1)
 	log "$diag : $diagstate trial $i"
-	sleep 5
 	if [ $i -gt 10 ]; then
 		log "Too many trials, aborting"
 		break
