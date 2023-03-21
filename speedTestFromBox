@@ -68,6 +68,10 @@ do
 	GetFromBox
 	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
 	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
+	if [ "$diagstate" = "Error_Internal" ];  then                                                                                                       
+                echo "$diag : $diagstate aborting"                                                                                                     
+                break                                                                                                                                       
+        fi
 	i=$(expr $i + 1)
 	log "$diag : $diagstate trial $i"
 	if [ $i -gt 10 ]; then
