@@ -104,9 +104,9 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
 	UP=$(echo "scale=2; $(echo $res | jq -c .status.Upstream.rate) / 1000" | bc -l)
 	datedeb=$(echo $res | jq -c .status.Downstream.start)
 	logNas "info" "Debit from Box upload : $UP - download : $DOWN"
-	log "upload : $UP"	
-	log "download : $DOWN"	
-	log "Date : $datedeb"	
+	#log "upload : $UP"
+	#log "download : $DOWN"
+	#log "Date : $datedeb"	
 	if [ -n "$DOMOTICZ_SERV" ]; then
 		logNas "info" "Sending results to Domoticz : $DOMOTICZ_SERV"
 		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN"
