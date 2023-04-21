@@ -20,7 +20,7 @@ ENV TZ=Europe/Paris        \
 	BOX_PWD=passwords      \
 	CRON_MINUT_DELAY=15 
 
-RUN apk update && apk add curl mysql-client jq nano cron
+RUN apk update && apk add curl mysql-client jq nano cron logger
 RUN echo  "#! /bin/bash"                                        > /usr/local/bin/updtPkg      \              
 	&& echo  "apk -U upgrade"                	>> /usr/local/bin/updtPkg     \
 	&& echo  "curl -s -o /usr/local/bin/speedTestFromBox https://raw.githubusercontent.com/Goodlinux/debitMonitor/master/speedTestFromBox" >> /usr/local/bin/updtPkg   \
