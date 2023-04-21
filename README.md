@@ -2,6 +2,9 @@
 [![speedtest](https://img.shields.io/static/v1?label=based_on&message=speedtest-cli&color=blue)](link=https://github.com/sivel/speedtest-cli,float="left")
 
  It allows you to measure the internet speed in Upload / Download as well as the ping and send it to a Domoticz server.
+ 
+ New : 
+  - 2023-04 : Add send Log to a distant server 
 
 # INSTALL 
 [![docker](https://img.shields.io/static/v1?label=docker&message=debitmonitor&color=green)](link=https://hub.docker.com/r/goodlinux/debitmonitor,float="left")
@@ -29,6 +32,7 @@
  **CRON_HOUR_START** = 22         Hour to start the Job for Updates  
  **CRON_DAY_START** = sun         Day to start the job for updates values "mon tue ... sat sun"  
  **CRON_MINUT_DELAY** = 15        Delay in minutes for the CronJob to check the internet debit  
+ **LOG_SRV** = 192.168.0.150      Address of the Log server to send log     
  **SQL_SERV** = 192.168.10.150    Address of the SQL server  
  **SQL_PORT** = 3307              Port of the SQL server  
  **SQL_USER** = sgbdUser          Sgbd user name  
