@@ -24,6 +24,20 @@ if [ "$verbose" = "y" ]; then
 fi
 }
 
+##########################################
+### log information on log server      ###
+### $1 = log level name                ###
+### valid values are : emerg alert     ###
+### crit err warning notice info debug ###
+### $2 : message to log                ###
+##########################################
+logNas()
+{
+if [ -e /usr/bin/logger ]; then
+	logger -n $LOG_SRV -p user.$1 -s "$2"
+fi
+}
+
 GetFromBox() 
 {
 	log "---------------"
@@ -69,13 +83,13 @@ do
 	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
 	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
 	if [ "$diagstate" = "Error_Internal" ];  then                                                                                                       
-                echo "$diag : $diagstate aborting" >> /dev/stdout                                                                                                    
+                logNas "alert" "$diag : $diagstate aborting"                                                                                                    
                 break                                                                                                                                       
         fi
 	i=$(expr $i + 1)
 	log "$diag : $diagstate trial $i"
 	if [ $i -gt 10 ]; then
-		log "Too many trials, aborting"
+		logNas "warning" "Too many trials, aborting"
 		break
 	fi
 done
@@ -89,17 +103,17 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
 	DOWN=$(echo "scale=2; $(echo $res | jq -c .status.Downstream.rate) / 1000" | bc -l)
 	UP=$(echo "scale=2; $(echo $res | jq -c .status.Upstream.rate) / 1000" | bc -l)
 	datedeb=$(echo $res | jq -c .status.Downstream.start)
-  
+	logNas "info" "Debit from Box upload : $UP - download : $DOWN"
 	log "upload : $UP"	
 	log "download : $DOWN"	
 	log "Date : $datedeb"	
 	if [ -n "$DOMOTICZ_SERV" ]; then
-		echo "Sending results to Domoticz : $DOMOTICZ_SERV"
+		logNas "info" "Sending results to Domoticz : $DOMOTICZ_SERV"
 		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN"
 		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP"
 	fi
 	if [ -n "$SQL_SERV" ]; then
-      		echo "Sending result to SQL Server $SQL_SERV"
+      		logNas "info" "Sending result to SQL Server $SQL_SERV"
 		echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);"  > /var/tmp/insert.sql
 		mysql --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql
 	fi
