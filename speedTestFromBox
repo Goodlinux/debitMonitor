@@ -111,8 +111,18 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
 	#log "Date : $datedeb"	
 	if [ -n "$DOMOTICZ_SERV" ]; then
 		logNas "info" "Sending results to Domoticz : $DOMOTICZ_SERV"
-		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN"
-		curl --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP"
+		res=$(curl -s -S --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN")
+		if [ ! "$?" = "0" ]; then
+                        logNas "warning" "$res"
+                else
+                        logNas "user" "Status : $(echo $res | jq -c .status)"
+			res=$(curl -s -S --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP")	
+			if [ ! "$?" = "0" ]; then
+                        	logNas "warning" "$res"
+                	else
+                        	logNas "user" "Status : $(echo $res | jq -c .status)"
+                	fi
+                fi
 	fi
 	if [ -n "$SQL_SERV" ]; then
       		logNas "info" "Sending result to SQL Server $SQL_SERV"
