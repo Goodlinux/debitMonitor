@@ -112,15 +112,17 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
 	if [ -n "$DOMOTICZ_SERV" ]; then
 		logNas "info" "Sending results to Domoticz : $DOMOTICZ_SERV"
 		res=$(curl -s -S --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN")
-		if [ ! "$?" = "0" ]; then
-                        logNas "alert" "$res"
+		status=$(echo $res | jq -c .status)
+		if [ ! "$status" = "OK" ]; then
+                        logNas "alert" "DOWN : $res"
                 else
-                        logNas "info" "Status : $(echo $res | jq -c .status)"
+                        logNas "info" "DOWN Status : $status"
 			res=$(curl -s -S --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP")	
-			if [ ! "$?" = "0" ]; then
-                        	logNas "alert" "$res"
+			status=$(echo $res | jq -c .status)
+			if [ ! "$status" = "OK" ]; then
+                        	logNas "alert" "UP : $res"
                 	else
-                        	logNas "info" "Status : $(echo $res | jq -c .status)"
+                        	logNas "info" "UP Status : $status"
                 	fi
                 fi
 	fi
