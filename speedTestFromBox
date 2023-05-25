@@ -84,9 +84,9 @@ do
 	GetFromBox
 	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
 	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
-	if [ "$diagstate" = "Error_Internal" ];  then                                                                                                       
-                logNas "alert" "$diag : $diagstate aborting"                                                                                                    
-                break                                                                                                                                       
+	if [ "$diagstate" = "Error_Internal" ];  then                                                                                 
+                logNas "alert" "$diag : $diagstate aborting"
+                break
         fi
 	i=$(expr $i + 1)
 	log "$diag : $diagstate trial $i"
@@ -112,18 +112,18 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
 	if [ -n "$DOMOTICZ_SERV" ]; then
 		logNas "info" "Sending results to Domoticz : $DOMOTICZ_SERV"
 		res=$(curl -s -S --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_DOWN&nvalue=0&svalue=$DOWN")
-		status=$(echo $res | jq -c .status)
-		if [ ! "$status" = "OK" ]; then
-                        logNas "alert" "DOWN : $res"
-                else
+		status=$(echo $res | jq -c .status | tr -d '"')
+		if [ "$status" = "OK" ]; then
                         logNas "info" "DOWN Status : $status $(echo $res | jq -c .title)"
 			res=$(curl -s -S --user $DOMOTICZ_USER:$DOMOTICZ_PASS "http://$DOMOTICZ_SERV:$DOMOTICZ_PORT/json.htm?type=command&param=udevice&idx=$NUM_SENSOR_UP&nvalue=0&svalue=$UP")	
-			status=$(echo $res | jq -c .status)
-			if [ ! "$status" = "OK" ]; then
-                        	logNas "alert" "UP : $res $(echo $res | jq -c .title)"
+			status=$(echo $res | jq -c .status | tr -d '"')
+			if [ "$status" = "OK" ]; then
+				logNas "info" "UP Status : $status $(echo $res | jq -c .title)"
                 	else
-                        	logNas "info" "UP Status : $status"
+                        	logNas "alert" "UP :  : $res"
                 	fi
+		else
+			logNas "alert" "DOWN : $res"
                 fi
 	fi
 	if [ -n "$SQL_SERV" ]; then
