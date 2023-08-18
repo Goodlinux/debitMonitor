@@ -31,12 +31,10 @@ RUN echo  "#! /bin/sh"                                > /usr/local/bin/entrypoin
 	&& echo  "curl -s -o /usr/local/bin/speedTestFromBox https://raw.githubusercontent.com/Goodlinux/debitMonitor/master/speedTestFromBox"  >> /usr/local/bin/entrypoint.sh \
 	&& echo  "chmod +x /usr/local/bin/speedTestFromBox"        >> /usr/local/bin/entrypoint.sh \
 	&& echo  "echo change cron parameter with env variable"         >> /usr/local/bin/entrypoint.sh \
-	&& echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedTestFromBox ' > /etc/cron.d/speed-crontab" >> /usr/local/bin/entrypoint.sh  \
-	&& echo  "echo '00         '\$CRON_HOUR_START'     *       *       '\$CRON_DAY_START'     /usr/local/bin/updtPkg' >> /etc/cron.d/speed-crontab" >> /usr/local/bin/entrypoint.sh  \
-	&& echo  "chmod 0644 /etc/cron.d/speed-crontab"   >> /usr/local/bin/entrypoint.sh \
-	&& echo  "crontab /etc/cron.d/speed-crontab"   >> /usr/local/bin/entrypoint.sh \
-	&& echo  "echo launching cron"                 >> /usr/local/bin/entrypoint.sh \
-	&& echo  "cron -f"                        >> /usr/local/bin/entrypoint.sh  \
+	&& echo  "echo '*/'\$CRON_MINUT_DELAY'      *       *       *       *       /usr/local/bin/speedTestFromBox ' > /etc/crontabs/root" >> /usr/local/bin/entrypoint.sh  \
+	&& echo  "echo launching cron"              >> /usr/local/bin/entrypoint.sh \
+	&& echo  "crond -b "                        >> /usr/local/bin/entrypoint.sh  \
+	&& echo "/bin/sh "                          >> /usr/local/bin/entrypoint.sh  \
 	&& chmod a+x /usr/local/bin/*
 	
 CMD /usr/local/bin/entrypoint.sh 
