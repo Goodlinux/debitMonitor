@@ -80,7 +80,7 @@ method="getDiagnosticsState"
 i=0
 until [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]
 do
-	sleep 5
+	sleep 20
 	GetFromBox
 	diagstate=$(echo $res | jq -c .status.DiagnosticsState | tr -d '"')
 	diag=$(echo $res | jq -c .status.Diagnostics | tr -d '"' )
