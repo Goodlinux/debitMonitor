@@ -1,0 +1,60 @@
+#! /bin/sh
+########################
+###### Variables #######
+########################
+# vars
+
+output_type="accept: application/json"
+content_type="Content-Type: application/x-sah-ws-4-call+json"
+authorisation="Authorization: X-Sah "
+login="Authorization: X-Sah-Login"
+
+context="/var/tmp/livebox_context"
+cookie="/var/tmp/livebox_cookies"
+res=""
+verbose=""
+
+#######################
+##### Functions #######
+#######################
+log() 
+{
+if [ "$verbose" = "y" ]; then
+	echo "$1" >> /dev/stdout
+fi
+}
+
+##########################################
+### log information on log server      ###
+### $1 = log level name                ###
+### valid values are : emerg alert     ###
+### crit err warning notice info debug ###
+### $2 : message to log                ###
+##########################################
+logNas()
+{
+if [ -e /usr/bin/logger ]; then
+	logger -n $LOG_SRV -p user.$1 -t "$HOSTNAME" -s "$2"
+else
+	echo "$2" >> /dev/stdout
+fi
+}
+
+
+#################
+##### START #####
+#################
+# Get Params
+
+echo "*=*=**=*==*=*="
+DATE=$(date +'%Y-%m-%d %H:%M') 
+echo $DATE  > /dev/stdout
+
+DOWN="500"
+UP="666"
+logNas "info" "Sending result to SQL Server $SQL_SERV"
+echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);"  > /var/tmp/insert.sql
+ERR=$(mariadb --ssl=false --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql)
+if [ $? > 0]; then
+  logNas "Erreur" "Commande SQL echoué : $ERR"
+fi
