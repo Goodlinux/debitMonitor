@@ -53,8 +53,10 @@ echo $DATE  > /dev/stdout
 DOWN="500"
 UP="666"
 logNas "info" "Sending result to SQL Server $SQL_SERV"
-echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);"  > /var/tmp/insert.sql
-ERR=$(mariadb --ssl=false --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql)
+#echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);"  > /var/tmp/insert.sql
+#ERR=$( mariadb --ssl=false --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql)
+SQL = "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);" 
+ERR=$(echo $SQL | mariadb --ssl=false --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql)
 if [ $? > 0 ]; then
   logNas "warning" "Commande SQL echoué : $ERR"
 fi
