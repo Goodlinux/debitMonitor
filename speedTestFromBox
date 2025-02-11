@@ -127,7 +127,7 @@ if [ "$diag" = "speedService" ] && [ "$diagstate" = "Complete" ]; then
                 fi
 	fi
 	if [ -n "$SQL_SERV" ]; then
-      		logNas "info" "Sending result to SQL Server $SQL_SERV"
+		logNas "info" "Sending result to SQL Server $SQL_SERV"
 		echo "INSERT INTO \`debit\`(\`date\`,\`upload\`, \`download\`) VALUES ("\"$DATE\"",$UP,$DOWN);"  > /var/tmp/insert.sql
 		mariadb --ssl=false --user=$SQL_USER --host=$SQL_SERV --port=$SQL_PORT --password=$SQL_PASS  $SQL_BASE < /var/tmp/insert.sql
 		Erreur=$?
