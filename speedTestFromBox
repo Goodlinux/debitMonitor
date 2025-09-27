@@ -69,8 +69,8 @@ DATE=$(date +'%Y-%m-%d %H:%M')
 echo $DATE  > /dev/stdout
 
 log "Start speedtest diagnostic"
-service=AutoDiag 
-method=executeDiagnostics 
+service="AutoDiag" 
+method="executeDiagnostics" 
 param='"id":"speedService"'
 GetFromBox
 
