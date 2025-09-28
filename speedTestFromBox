@@ -68,6 +68,11 @@ echo "*=*=**=*==*=*="
 DATE=$(date +'%Y-%m-%d %H:%M') 
 echo $DATE  > /dev/stdout
 
+log "Clear context"
+service="AutoDiag" 
+method="clearContext" 
+GetFromBox
+
 log "Start speedtest diagnostic"
 service="AutoDiag" 
 method="executeDiagnostics" 
@@ -92,6 +97,15 @@ do
 	log "$diag : $diagstate trial $i"
 	if [ $i -gt 10 ]; then
 		logNas "warning" "Too many trials, aborting"
+		service="AutoDiag" 
+		method="cancelDiagnostics"
+		param='"id":"speedService"'
+		GetFromBox
+
+		service="AutoDiag" 
+		method="clearContext" 
+		GetFromBox
+
 		break
 	fi
 done
